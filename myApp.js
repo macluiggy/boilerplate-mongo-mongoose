@@ -33,8 +33,11 @@ const createManyPeople = (arrayOfPeople, done) => {
   )
 };
 
+//aqui se utiiza el metodo Model.find(jsonObject, callback), este lo que hace es devolver un array que encaje con la busqueda, en este caso devolvera un array que contenga todos los objetos en el que su propiedad name sea igual a personName, y al igual que los anteriores, recibe un callback como segundo argumento
 const findPeopleByName = (personName, done) => {
-  done(null /*, data*/);
+  Person.find({ name: personName }, (err, data) => 
+    err ? console.log(err) : done(null, data)
+  )
 };
 
 const findOneByFood = (food, done) => {
