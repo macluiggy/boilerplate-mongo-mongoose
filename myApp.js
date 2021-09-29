@@ -10,23 +10,27 @@ let personSchema = new mongoose.Schema({
     name: String,
     age: Number,
     favoriteFoods: Array,
-    _id: Number,
 })
 
 
 //se crea un modelo, para esto hay que tranfomar el schema en un modelo usando el metodo que se ve a continuacion, la sintaxis es mongoose.model(modelName, schema)
 let Person = mongoose.model('Person', personSchema) ;
 
-let person = new Person()
-console.log(person)
-
 
 const createAndSavePerson = (done) => {
-  done(null /*, data*/);
+  //se crea un instancia del contructor Person que se creo anteriormente
+  let person = new Person({name: 'hola', age: 18, favoriteFoods: ['sandia', 'jajaj']})
+  //una vez creado, se usa el metodo save de la instancia y se le pasa un callback
+  person.save((err, data) => 
+    err ? console.log(err) : done(null, data)
+  )
 };
 
+//aqui se usa la sintaxis Model.create(array, handler), este se utiliza para crear muchas instancias de tus modelos, esto seria igual a crear una instancia con new Model({name: 'name', ...}), solo que aqui se crean mas de una
 const createManyPeople = (arrayOfPeople, done) => {
-  done(null /*, data*/);
+  Person.create(arrayOfPeople, (err, data) => 
+    err ? console.log(err) : done(null, data)
+  )
 };
 
 const findPeopleByName = (personName, done) => {
