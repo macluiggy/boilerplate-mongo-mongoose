@@ -5,7 +5,21 @@ var mongoose =  require('mongoose');
 //conectamos la app con mongo
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-let Person;
+//crea un esquema de mongoose, este mapea por una coleccion de mongo y define la forma que tendra los documentos dentro de esa coleccion
+let personSchema = new mongoose.Schema({
+    name: String,
+    age: Number,
+    favoriteFoods: Array,
+    _id: Number,
+})
+
+
+//se crea un modelo, para esto hay que tranfomar el schema en un modelo usando el metodo que se ve a continuacion, la sintaxis es mongoose.model(modelName, schema)
+let Person = mongoose.model('Person', personSchema) ;
+
+let person = new Person()
+console.log(person)
+
 
 const createAndSavePerson = (done) => {
   done(null /*, data*/);
