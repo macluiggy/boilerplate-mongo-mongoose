@@ -47,20 +47,38 @@ const findOneByFood = (food, done) => {
   )
 };
 
+//aqui se usa el metodo findById para buscar por id, la sintaxis es similar a find y findOne
 const findPersonById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findById({_id: personId }, (err, data) => 
+    err ? console.log(err) : done(null, data)
+  )
 };
 
+//aqui se usa los conocimientos previos para actualizar un dato, en este caso se va a añadir una comida al array favoriteFoods
 const findEditThenSave = (personId, done) => {
+  //creamos la vairable que se va a añadir
   const foodToAdd = "hamburger";
+  //se usa el metodo findById para buscar a la persona correspondiete, para que luego el handler haga de las suyas, si no se encuentra se usa el argumento err, si si se usa el argumento que devuelve la data (person) que encaje con el primer argumento ({ _id: personId })
+  Person.findById({ _id: personId, }, (err, person) => {
+    //person.favoriteFoods.push(foodToAdd)
+    let { favoriteFoods } = person
+    //si se encuentra el id, osea que no hay ningun error, se va a añadir la variable de la comida al array favoriteFoods
+    favoriteFoods.push(foodToAdd)
+    //una vez añadido se guarda esa persona para que se actualize y no perder esa configuracion
+    person.save((err, person) => {
+      done(null, person)
+    })
 
-  done(null /*, data*/);
+  })
 };
 
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
-
-  done(null /*, data*/);
+  Person.findOneAndUpdate({ name: personName }, { age: ageToSet}, { new: true }, (err, person) => {
+    if (err) return console.log(err)
+    person.age = ageToSet;
+    done(null, person)
+  })
 };
 
 const removeById = (personId, done) => {
