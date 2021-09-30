@@ -26,7 +26,7 @@ const createAndSavePerson = (done) => {
   )
 };
 
-//aqui se usa la sintaxis Model.create(array, handler), este se utiliza para crear muchas instancias de tus modelos, esto seria igual a crear una instancia con new Model({name: 'name', ...}), solo que aqui se crean mas de una
+//aqui se usa la sintaxis Model.create(array, handler), este se utiliza para crear muchas instancias de tus modelos, esto seria igual a crear una instancia con new Model({name: 'name', ...}), solo que aqui se pueden crear mas de una
 const createManyPeople = (arrayOfPeople, done) => {
   Person.create(arrayOfPeople, (err, data) => 
     err ? console.log(err) : done(null, data)
@@ -40,8 +40,11 @@ const findPeopleByName = (personName, done) => {
   )
 };
 
+//aqui se utiliza un metodo similar al metodo Model.find({ key: value}, handler), solo que este solo retorna un documento (no un array), incluso si existe mas de un item. Es muy util cuando buscas propiedades que has declarado como unicas
 const findOneByFood = (food, done) => {
-  done(null /*, data*/);
+  Person.findOne({favoriteFoods: food }, (err, data) => 
+    err ? console.log(err) : done(null, data)
+  )
 };
 
 const findPersonById = (personId, done) => {
