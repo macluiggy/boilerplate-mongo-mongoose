@@ -72,23 +72,34 @@ const findEditThenSave = (personId, done) => {
   })
 };
 
+//en este se actualizara un dato al igual que el anterior, pero aqui se utilizara findOneAndUpdate
 const findAndUpdate = (personName, done) => {
+  //se define la variable con la que se actializara el dato
   const ageToSet = 20;
-  Person.findOneAndUpdate({ name: personName }, { age: ageToSet}, { new: true }, (err, person) => {
+  //de las instancias creadas con la classe Person
+  Person
+    //busca a una persona que tenga el nombre personName (primer argumento) (en este caso no es necesario poner { key: value } ya que se puede poner solo value (personName) pero ambos funcionan, luego si se encuentra actualiza la propiedad que se requiera (en este case age) con la variable que se creo (ageToSet) (esto se hace en el segundo argumento), (en el tercer argumento) para que se actualize los datos, se debe poner lo que se ve en el 3er argumento ({ new: true }), ya que por defecto estos metodos devuelven el objeto sin modificar
+    .findOneAndUpdate(personName, { age: ageToSet}, { new: true }, (err, person) => {
     if (err) return console.log(err)
-    person.age = ageToSet;
     done(null, person)
   })
 };
 
+//este es similar al anterior
 const removeById = (personId, done) => {
-  done(null /*, data*/);
+  //de las instancias de Person
+  Person
+    //encuantra a la persona con id=personId, si la encuentra has lo que dice el metodo findByIdAndRemove
+    .findByIdAndRemove(personId /*{ _id: personId }*/, (err, personToRemove) => {
+      done(null, personToRemove)
+    })
 };
 
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
-
-  done(null /*, data*/);
+  Person.remove({ name: nameToRemove }, (err, personToRemove) => {
+    done(null, personToRemove);
+  })
 };
 
 const queryChain = (done) => {
